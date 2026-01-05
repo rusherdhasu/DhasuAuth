@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DhasuAuth - Advanced Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-shell animate-in">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">D</div>
+                <div class="brand-name">DhasuAuth</div>
+            </div>
+
+            <div class="nav-links">
+                <div class="nav-section-title">Application</div>
+                <div id="panelsList" class="panel-scroller">
+                    <!-- Dynamic panels list managed by app.js -->
+                </div>
+                <div class="nav-item" id="createPanelBtn"
+                    style="border: 1px dashed var(--border); margin-top: 10px; opacity: 0.6;">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                    </svg>
+                    <span>Create Panel</span>
+                </div>
+
+                <div class="nav-section-title" style="margin-top: 32px;">Management</div>
+                <div class="nav-item active" data-tab="users">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                    <span>User Accounts</span>
+                </div>
+                <div class="nav-item" data-tab="hwid">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                    </svg>
+                    <span>HWID Access</span>
+                </div>
+                <div class="nav-item" data-tab="settings">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.47,5.34 14.86,5.12L14.47,2.47C14.44,2.23 14.24,2.05 14,2.05H10C9.76,2.05 9.56,2.23 9.53,2.47L9.14,5.12C8.53,5.34 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.95C7.96,18.34 8.53,18.66 9.14,18.88L9.53,21.53C9.56,21.77 9.76,21.95 10,21.95H14C14.24,21.95 14.44,21.77 14.47,21.53L14.86,18.88C15.47,18.66 16.04,18.34 16.56,17.95L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                    </svg>
+                    <span>Panel Settings</span>
+                </div>
+            </div>
+
+            <div class="user-profile" id="logoutBtn">
+                <div class="user-tray-inner">
+                    <div class="avatar" id="avatarInitial">U</div>
+                    <div class="item-content">
+                        <div class="item-title" id="userTag" style="font-size: 0.9rem;">User</div>
+                        <div class="item-subtitle">Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Viewport -->
+        <main class="viewport">
+            <!-- Top Header -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1 id="pageTitle">User Accounts</h1>
+                </div>
+                <div class="user-tray">
+                    <div class="badge badge-active" id="panelStatusBadge" style="letter-spacing: 1px;">Status: Active
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Area -->
+            <div class="content-area">
+
+                <!-- Stats Grid -->
+                <div id="statsContainer" class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Total Volume</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statActive" style="color: var(--success);">0</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPause" style="color: var(--warning);">0</div>
+                        <div class="stat-label">Paused Slates</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statBan" style="color: var(--error);">0</div>
+                        <div class="stat-label">Banned Records</div>
+                    </div>
+                </div>
+
+                <!-- Tab Panels Container -->
+                <div class="tab-content">
+
+                    <!-- USER MANAGEMENT PANEL -->
+                    <div id="usersPanel" class="tab-panel active">
+                        <div class="management-container">
+                            <!-- Sidebar: Users List -->
+                            <div class="list-pane">
+                                <div class="pane-header" style="display: flex; gap: 12px;">
+                                    <input type="text" id="userSearch" placeholder="Search accounts..."
+                                        style="flex: 1; padding: 12px; height: 44px; font-size: 0.9rem;">
+                                    <button id="createNewUserToggle" class="btn btn-primary"
+                                        style="padding: 0 16px; height: 44px; font-size: 0.85rem;">Create</button>
+                                </div>
+                                <div id="userList" class="scroller">
+                                    <div class="loading-placeholder">Initializing records...</div>
+                                </div>
+                            </div>
+
+                            <!-- Detail: User Form -->
+                            <div class="details-pane">
+                                <div id="noUserSelected" class="empty-hero">
+                                    <svg style="width: 100px; height: 100px;" viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                    </svg>
+                                    <h2 style="font-family: 'Outfit';">No Selection</h2>
+                                    <p style="opacity: 0.5;">Detailed analytics and control tools will appear here.</p>
+                                </div>
+
+                                <div id="userEditForm" style="display: none;">
+                                    <div class="form-header">
+                                        <div>
+                                            <h2 id="editingUserTitle"
+                                                style="font-family: 'Outfit'; font-size: 1.8rem; margin-bottom: 4px;">
+                                                User Profile</h2>
+                                            <p style="color: var(--text-muted); font-size: 0.9rem;">Manage specific
+                                                account details and security locks.</p>
+                                        </div>
+                                        <div id="userStatusBadge" class="badge">ACTIVE</div>
+                                    </div>
+
+                                    <div class="input-grid">
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Identity / Username</label>
+                                            <input type="text" id="editUsername">
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Credential / Password</label>
+                                            <input type="text" id="editPassword">
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Operational Status</label>
+                                            <select id="editStatus">
+                                                <option value="active">Active</option>
+                                                <option value="pause">Paused</option>
+                                                <option value="ban">Banned</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Access Expiry</label>
+                                            <input type="date" id="editExpiry">
+                                        </div>
+                                    </div>
+
+                                    <div class="input-wrapper" style="margin-bottom: 32px;">
+                                        <label class="input-label">System Journal / Notes</label>
+                                        <textarea id="editReason" rows="4"
+                                            placeholder="Log internal changes or user-specific notes..."></textarea>
+                                    </div>
+
+                                    <div class="input-wrapper" style="margin-bottom: 40px;">
+                                        <label class="input-label">Hardware Security binding (HWID)</label>
+                                        <div style="display: flex; gap: 12px;">
+                                            <input type="text" id="editHwid" readonly
+                                                style="flex: 1; font-family: 'Outfit', monospace; font-size: 0.85rem; background: rgba(0,0,0,0.5);"
+                                                placeholder="Unlinked Device">
+                                            <button id="resetHwidBtn" class="btn btn-secondary"
+                                                style="width: auto; padding: 0 24px;">Reset Binding</button>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        style="display: flex; gap: 16px; border-top: 1px solid var(--border); padding-top: 32px;">
+                                        <button id="saveUserBtn" class="btn btn-primary" style="flex: 2;">Apply
+                                            Synchronized Changes</button>
+                                        <button id="deleteUserBtn" class="btn btn-danger">Purge Account</button>
+                                    </div>
+                                </div>
+
+                                <div id="userCreateForm" style="display: none;">
+                                    <div class="form-header">
+                                        <h2 style="font-family: 'Outfit'; font-size: 1.8rem;">Initialize Account</h2>
+                                    </div>
+                                    <div class="input-grid">
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Desired Username</label>
+                                            <input type="text" id="newUsername" placeholder="e.g. MasterUser">
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Password (Optional)</label>
+                                            <input type="text" id="newPassword" placeholder="Default null">
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Term of Access (Days)</label>
+                                            <input type="number" id="newExpiry" value="30">
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <label class="input-label">Initial State</label>
+                                            <select id="newStatus">
+                                                <option value="active">Active</option>
+                                                <option value="pause">Paused</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="display: flex; gap: 16px; margin-top: 40px; border-top: 1px solid var(--border); padding-top: 32px;">
+                                        <button id="createUserBtn" class="btn btn-primary" style="flex: 2;">Provision
+                                            Account</button>
+                                        <button id="cancelCreateBtn" class="btn btn-secondary">Discard Process</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HWID ACCESS PANEL -->
+                    <div id="hwidPanel" class="tab-panel">
+                        <div class="management-container">
+                            <!-- Sidebar: HWID List -->
+                            <div class="list-pane">
+                                <div class="pane-header" style="display: flex; gap: 12px;">
+                                    <input type="text" id="hwidSearch" placeholder="Search HWIDs..."
+                                        style="flex: 1; padding: 12px; height: 44px; font-size: 0.9rem;">
+                                    <button id="createNewHwidToggle" class="btn btn-primary"
+                                        style="padding: 0 16px; height: 44px; font-size: 0.85rem;">Add</button>
+                                </div>
+                                <div id="hwidList" class="scroller">
+                                    <div class="loading-placeholder">Initializing whitelist...</div>
+                                </div>
+                            </div>
+
+                            <!-- Detail: HWID Form -->
+                            <div class="details-pane">
+                                <div id="noHwidSelected" class="empty-hero">
+                                    <svg style="width: 100px; height: 100px;" viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                                    </svg>
+                                    <h2 style="font-family: 'Outfit';">Security Portal</h2>
+                                    <p style="opacity: 0.5;">Select an authorized device or add a new hardware
+                                        signature.</p>
+                                </div>
+
+                                <div id="hwidEditForm" style="display: none;">
+                                    <div class="form-header">
+                                        <div>
+                                            <h2 style="font-family: 'Outfit'; font-size: 1.8rem; margin-bottom: 4px;">
+                                                Hardware Identity</h2>
+                                            <p style="color: var(--text-muted); font-size: 0.9rem;">Configure global
+                                                access for specific hardware signatures.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-wrapper" style="margin-bottom: 24px;">
+                                        <label class="input-label">Authorized HWID (64-bit Hash)</label>
+                                        <input type="text" id="hwidVal" placeholder="Paste HWID string">
+                                    </div>
+                                    <div class="input-wrapper" style="margin-bottom: 24px;">
+                                        <label class="input-label">Device Label / Alias</label>
+                                        <input type="text" id="hwidName" placeholder="e.g. Developer_Workstation">
+                                    </div>
+                                    <div class="input-wrapper" style="margin-bottom: 32px;">
+                                        <label class="input-label">Access Lifetime (Days)</label>
+                                        <input type="number" id="hwidExpiry" placeholder="Permanent access if blank">
+                                    </div>
+
+                                    <div
+                                        style="display: flex; gap: 16px; border-top: 1px solid var(--border); padding-top: 32px;">
+                                        <button id="saveHwidBtn" class="btn btn-primary" style="flex: 2;">Apply
+                                            Authorization</button>
+                                        <button id="deleteHwidBtn" class="btn btn-danger">Revoke Access</button>
+                                        <button id="cancelHwidEditBtn" class="btn btn-secondary">Discard</button>
+                                    </div>
+                                </div>
+
+                                <div id="hwidCreateForm" style="display: none;">
+                                    <div class="form-header">
+                                        <h2 style="font-family: 'Outfit'; font-size: 1.8rem;">Whitelist New Device</h2>
+                                    </div>
+                                    <div class="input-wrapper" style="margin-bottom: 24px;">
+                                        <label class="input-label">Hardware Signature</label>
+                                        <input type="text" id="newHwidVal" placeholder="Enter remote HWID">
+                                    </div>
+                                    <div class="input-wrapper" style="margin-bottom: 24px;">
+                                        <label class="input-label">Friendly Alias</label>
+                                        <input type="text" id="newHwidName" placeholder="e.g. Customer_PC_01">
+                                    </div>
+                                    <div class="input-wrapper" style="margin-bottom: 32px;">
+                                        <label class="input-label">Lifespan (Days)</label>
+                                        <input type="number" id="newHwidExpiry" placeholder="Empty for infinite">
+                                    </div>
+                                    <div
+                                        style="display: flex; gap: 16px; margin-top: 40px; border-top: 1px solid var(--border); padding-top: 32px;">
+                                        <button id="createHwidBtn" class="btn btn-primary" style="flex: 2;">Provision
+                                            Whitelist</button>
+                                        <button id="cancelHwidCreateBtn" class="btn btn-secondary">Abrit
+                                            Process</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SETTINGS PANEL -->
+                    <div id="settingsPanel" class="tab-panel">
+                        <div class="details-pane settings-pane">
+                            <div class="form-header">
+                                <div>
+                                    <h2 style="font-family: 'Outfit'; font-size: 2rem; margin-bottom: 8px;">Global
+                                        Application Settings</h2>
+                                    <p style="color: var(--text-muted);">Configure core parameters and portal
+                                        accessibility for your software instance.</p>
+                                </div>
+                            </div>
+                            <div class="input-grid">
+                                <div class="input-wrapper">
+                                    <label class="input-label">Application Secret (Protected)</label>
+                                    <input type="text" id="panelSecret" readonly style="opacity: 0.5;">
+                                </div>
+                                <div class="input-wrapper">
+                                    <label class="input-label">Software Version Mapping</label>
+                                    <input type="text" id="panelVersion" placeholder="1.0.0">
+                                </div>
+                                <div class="input-wrapper">
+                                    <label class="input-label">System-Wide Status</label>
+                                    <select id="panelStatus">
+                                        <option value="active">Fully Operational</option>
+                                        <option value="disabled">Maintenance / Offline</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h3 style="margin: 40px 0 20px 0; font-family: 'Outfit'; color: var(--accent);">Public
+                                Credential Overrides</h3>
+                            <div class="input-grid">
+                                <div class="input-wrapper">
+                                    <label class="input-label">Portal Username</label>
+                                    <input type="text" id="pubUsername">
+                                </div>
+                                <div class="input-wrapper">
+                                    <label class="input-label">Portal Password</label>
+                                    <input type="text" id="pubPassword">
+                                </div>
+                            </div>
+
+                            <div
+                                style="display: flex; gap: 16px; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 40px;">
+                                <button id="savePanelSettingsBtn" class="btn btn-primary" style="flex: 2;">Commit Global
+                                    Changes</button>
+                                <button id="deleteActivePanelBtn" class="btn btn-danger">Terminate Panel
+                                    Instance</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DhasuAuth - Enterprise Access</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --bg-deep: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-deep);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- DYNAMIC MESH BACKGROUND --- */
+        .mesh-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-color: var(--bg-deep);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.15) 0px, transparent 50%);
+        }
+
+        .mesh-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("https://grainy-gradients.vercel.app/noise.svg");
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* Moving Orbs */
+        .orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            opacity: 0.4;
+            animation: orbMove 25s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            animation-duration: 30s;
+        }
+
+        .orb-3 {
+            background: radial-gradient(circle, #2563eb 0%, transparent 70%);
+            top: 40%;
+            left: 30%;
+            animation-duration: 20s;
+            opacity: 0.2;
+        }
+
+        @keyframes orbMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(150px, 100px) scale(1.2);
+            }
+        }
+
+        /* --- LOGIN CARD --- */
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(32px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 56px 40px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            animation: cardEntrance 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to bottom, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .auth-subtitle a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .auth-subtitle a:hover {
+            color: #818cf8;
+        }
+
+        /* --- FORMS --- */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(2, 6, 23, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: white;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            background: rgba(2, 6, 23, 0.7);
+            outline: none;
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            color: #64748b;
+            font-size: 0.8rem;
+            text-decoration: none;
+            margin-bottom: 28px;
+            transition: color 0.2s;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary);
+        }
+
+        /* --- BUTTONS --- */
+        .primary-btn {
+            width: 100%;
+            background: white;
+            color: #020617;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+            margin-bottom: 32px;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+            background: #f8fafc;
+        }
+
+        .primary-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #020617;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            color: #475569;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 32px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider span {
+            padding: 0 12px;
+        }
+
+        .social-btn {
+            width: 100%;
+            height: 54px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Logic Classes */
+        #loginForm,
+        #signupForm {
+            display: none;
+        }
+
+        #loginForm.active,
+        #signupForm.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="mesh-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="logo">DhasuAuth</div>
+            <div class="auth-subtitle" id="subtitleText">
+                New to the platform? <a href="#" onclick="toggleAuth('signup')">Create account</a>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <!-- LOGIN FORM -->
+        <div id="loginForm" class="active">
+            <div class="form-group">
+                <input type="email" id="loginEmail" placeholder="Gmail Address" autocomplete="email">
+            </div>
+            <div class="form-group">
+                <input type="password" id="loginPassword" placeholder="Password">
+            </div>
+            <a href="#" class="forgot-password">Recovery options?</a>
+            <button class="primary-btn" onclick="handleAuth('login')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M10 17V14H3V10H10V7L15 12L10 17M10 2H19C20.1 2 21 2.9 21 4V20C21 21.1 20.1 22 19 22H10C8.9 22 8 21.1 8 20V18H10V20H19V4H10V6H8V4C8 2.9 8.9 2 10 2Z" />
+                </svg>
+                Secure Login
+            </button>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div id="signupForm">
+            <div class="form-group">
+                <input type="email" id="registerEmail" placeholder="Enter Gmail Address">
+            </div>
+            <div class="form-group">
+                <input type="password" id="registerPassword" placeholder="Choose Password">
+            </div>
+            <div style="height: 24px;"></div>
+            <button class="primary-btn" onclick="handleAuth('register')">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M15 14C12.33 14 7 15.33 7 18V20H23V18C23 15.33 17.67 14 15 14M15 12C16.1 12 17.09 11.61 17.88 10.97C19.19 9.91 20 8.3 20 6.5C20 3.46 17.54 1 14.5 1C12.41 1 10.59 2.16 9.61 3.88C9.23 4.5 9 5.23 9 6C9 7.6 9.69 9.04 10.79 10.06C11.83 11 13.25 11.72 14.81 11.96C14.87 11.96 14.94 12 15 12M4 7V4H2V7H-1V9H2V12H4V9H7V7H4Z" />
+                </svg>
+                Start Registration
+            </button>
+        </div>
+
+        <div class="divider">
+            <span>Enterprise Gateway</span>
+        </div>
+
+        <a href="https://authblackholebackend.onrender.com/api/auth/discord" class="social-btn">
+            <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: #5865F2;">
+                <path
+                    d="M19.27 4.57C17.75 3.82 16.1 3.24 14.37 2.89C14.15 3.26 13.92 3.73 13.78 4.09C11.94 3.82 10.12 3.82 8.35 4.09C8.21 3.73 7.97 3.26 7.76 2.89C6.03 3.24 4.38 3.82 2.86 4.57C-.18 9.17-.99 13.66.61 18.06C2.63 19.56 4.58 20.47 6.49 21.07C6.96 20.43 7.39 19.74 7.75 19.01C7.05 18.75 6.39 18.42 5.76 18.03C5.93 17.91 6.1 17.78 6.26 17.65C10.11 19.42 14.28 19.42 18.08 17.65C18.24 17.78 18.41 17.91 18.58 18.03C17.95 18.42 17.29 18.75 16.59 19.01C16.95 19.74 17.38 20.43 17.85 21.07C19.77 20.47 21.72 19.56 23.73 18.06C25.56 13.06 24.62 8.63 19.27 4.57ZM8.73 14.82C7.57 14.82 6.61 13.74 6.61 12.43C6.61 11.12 7.55 10.04 8.73 10.04C9.91 10.04 10.88 11.12 10.86 12.43C10.86 13.74 9.91 14.82 8.73 14.82ZM15.61 14.82C14.45 14.82 13.49 13.74 13.49 12.43C13.49 11.12 14.43 10.04 15.61 10.04C16.79 10.04 17.76 11.12 17.74 12.43C17.74 13.74 16.81 14.82 15.61 14.82Z" />
+            </svg>
+            Continue with Discord
+        </a>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        function toggleAuth(mode) {
+            const login = document.getElementById('loginForm');
+            const signup = document.getElementById('signupForm');
+            const subtitle = document.getElementById('subtitleText');
+            const error = document.getElementById('errorMessage');
+
+            error.style.display = 'none';
+
+            if (mode === 'signup') {
+                login.classList.remove('active');
+                signup.classList.add('active');
+                subtitle.innerHTML = 'Already registered? <a href="#" onclick="toggleAuth(\'login\')">Sign in</a>';
+            } else {
+                signup.classList.remove('active');
+                login.classList.add('active');
+                subtitle.innerHTML = 'New to the platform? <a href="#" onclick="toggleAuth(\'signup\')">Create account</a>';
+            }
+        }
+
+        async function handleAuth(type) {
+            const email = document.getElementById(type === 'login' ? 'loginEmail' : 'registerEmail').value;
+            const password = document.getElementById(type === 'login' ? 'loginPassword' : 'registerPassword').value;
+            const error = document.getElementById('errorMessage');
+
+            if (!email || !password) {
+                error.textContent = "Credential fields cannot be empty.";
+                error.style.display = 'block';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/auth/${type}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include'
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    error.textContent = data.message || "Access denied. Check credentials.";
+                    error.style.display = 'block';
+                }
+            } catch (err) {
+                error.textContent = "Infrastructure offline. Check server status.";
+                error.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+
+</html>
